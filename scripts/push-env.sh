@@ -8,7 +8,7 @@
 # This script:
 #   1. Reads secrets/openclaw.env
 #   2. Validates required vars are non-empty
-#   3. SCPs it to openclaw@VPS:/home/openclaw/openclaw/.env
+#   3. SCPs it to openclaw@VPS:/home/openclaw/.openclaw/.env
 # =============================================================================
 
 set -euo pipefail
@@ -21,7 +21,7 @@ VPS_USER="openclaw"
 SSH_OPTS="-o StrictHostKeyChecking=accept-new"
 TERRAFORM_DIR="infra/terraform/envs/prod"
 ENV_FILE="secrets/openclaw.env"
-REMOTE_PATH="/home/openclaw/openclaw/.env"
+REMOTE_PATH="/home/openclaw/.openclaw/.env"
 
 # Required variables that must be non-empty
 REQUIRED_VARS=(
