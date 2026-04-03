@@ -21,6 +21,14 @@ VPS_USER="openclaw"
 SSH_OPTS="-o StrictHostKeyChecking=accept-new"
 TERRAFORM_DIR="infra/terraform/envs/prod"
 
+# GitHub Container Registry credentials (from local env)
+GHCR_USERNAME="${GHCR_USERNAME:-}"
+GHCR_TOKEN="${GHCR_TOKEN:-}"
+
+if [[ -z "$GHCR_USERNAME" || -z "$GHCR_TOKEN" ]]; then
+    echo "[WARN] GHCR_USERNAME and GHCR_TOKEN are not set; private image pulls may fail."
+fi
+
 # -----------------------------------------------------------------------------
 # Get VPS IP
 # -----------------------------------------------------------------------------
@@ -56,7 +64,11 @@ echo ""
 # Deploy on VPS
 # -----------------------------------------------------------------------------
 
-ssh $SSH_OPTS "$VPS_USER@$VPS_IP" bash -s << 'REMOTE_SCRIPT'
+ssh $SSH_OPTS "$VPS_USER@$VPS_IP" bash -s "$GHCR_USERNAME" "$GHCR_TOKEN" << 'REMOTE_SCRIPT'
+
+GHCR_USERNAME=$1
+GHCR_TOKEN=$2
+export GHCR_USERNAME GHCR_TOKEN
 
 # Colors
 G='\033[0;32m'
@@ -94,6 +106,17 @@ SYNC_ENABLED=false
 if [[ -f .env ]] && grep -qE '^GIT_WORKSPACE_(REPO|REMOTE)(_[A-Z]+)?=.+' .env; then
     PROFILES="--profile sync"
     SYNC_ENABLED=true
+fi
+
+# Login in ghrc.io
+echo -e "${BOLD}Login in ghrc.io${NC}"
+if [[ -n "$GHCR_USERNAME" ]] && [[ -n "$GHCR_TOKEN" ]]; then
+    echo "Logging in to GitHub Container Registry..."
+    echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin"
+    echo -e "${G}Login successful.${NC}"
+else
+    echo -e "${R}GHCR credentials not set (GHCR_USERNAME / GHCR_TOKEN){NC}"
+    echo "       Set them in config/inputs.sh to pull private images"
 fi
 
 # Pull
@@ -149,7 +172,7 @@ while IFS= read -r line; do
         echo -e "  ${R}●${NC} ${NAME}  ${R}${STATUS}${NC}"
     fi
 done < <(docker compose ps --format '{{.Name}}\t{{.Status}}' 2>/dev/null)
-
+docker logout
 echo ""
 echo -e "${G}Deploy complete${NC}"
 echo ""
