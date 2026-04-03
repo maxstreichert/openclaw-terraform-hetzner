@@ -87,16 +87,6 @@ runcmd:
 %{ endif ~}
 %{ endif ~}
 
-  # -----------------------------------------------------------------------------
-  # Configure UFW Firewall
-  # -----------------------------------------------------------------------------
-  - ufw default deny incoming
-  - ufw default allow outgoing
-  - ufw allow ssh
-%{ if enable_tailscale ~}
-  - ufw allow 41641/udp comment 'Tailscale'
-%{ endif ~}
-  - ufw --force enable
 
   # -----------------------------------------------------------------------------
   # Create Application Directories
