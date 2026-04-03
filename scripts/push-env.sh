@@ -21,7 +21,7 @@ VPS_USER="openclaw"
 SSH_OPTS="-o StrictHostKeyChecking=accept-new"
 TERRAFORM_DIR="infra/terraform/envs/prod"
 ENV_FILE="secrets/openclaw.env"
-REMOTE_PATH="/home/openclaw/.env"
+REMOTE_PATH="/home/openclaw/openclaw/.env"
 
 # GitHub Container Registry credentials (from local env)
 GHCR_USERNAME="${GHCR_USERNAME:-}"
