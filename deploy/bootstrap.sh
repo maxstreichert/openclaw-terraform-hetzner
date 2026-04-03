@@ -107,21 +107,6 @@ else
 fi
 
 # -----------------------------------------------------------------------------
-# Log in to GitHub Container Registry
-# -----------------------------------------------------------------------------
-
-echo ""
-if [[ -n "$GHCR_USERNAME" ]] && [[ -n "$GHCR_TOKEN" ]]; then
-    echo "Logging in to GitHub Container Registry..."
-    ssh $SSH_OPTS "$VPS_USER@$VPS_IP" \
-        "echo '$GHCR_TOKEN' | docker login ghcr.io -u '$GHCR_USERNAME' --password-stdin"
-    echo "[OK] GHCR login successful"
-else
-    echo "[SKIP] GHCR credentials not set (GHCR_USERNAME / GHCR_TOKEN)"
-    echo "       Set them in config/inputs.sh to pull private images"
-fi
-
-# -----------------------------------------------------------------------------
 # Create directories on VPS
 # -----------------------------------------------------------------------------
 
