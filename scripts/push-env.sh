@@ -130,21 +130,4 @@ echo "Copying docker-compose.yml to VPS..."
 scp $SSH_OPTS "$CONFIG_DIR/docker/docker-compose.yml" "$VPS_USER@$VPS_IP:~/openclaw/docker-compose.yml"
 echo "[OK] docker-compose.yml deployed to ~/openclaw/"
 
-# -----------------------------------------------------------------------------
-# Restart container to pick up changes
-# -----------------------------------------------------------------------------
 
-echo ""
-echo "[...] Restarting container..."
-
-ssh $SSH_OPTS "$VPS_USER@$VPS_IP" bash -s "$GHCR_USERNAME" "$GHCR_TOKEN" << 'REMOTE_SCRIPT'
-GHCR_USERNAME=$1
-GHCR_TOKEN=$2
-export GHCR_USERNAME GHCR_TOKEN
-echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin 
-cd ~/openclaw && docker compose up -d 2>/dev/null
-docker logout
-REMOTE_SCRIPT
-
-echo ""
-echo "=== Done ==="

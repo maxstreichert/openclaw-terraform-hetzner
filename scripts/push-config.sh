@@ -100,15 +100,3 @@ ssh $SSH_OPTS "$VPS_USER@$VPS_IP" "find $REMOTE_CONFIG_DIR -maxdepth 1 -type f -
 echo ""
 echo "[OK] Pushed $FILE_COUNT config file(s)"
 
-# -----------------------------------------------------------------------------
-# Restart container to pick up changes
-# -----------------------------------------------------------------------------
-
-echo ""
-echo "[...] Restarting container..."
-
-ssh $SSH_OPTS "$VPS_USER@$VPS_IP" \
-    "cd ~/openclaw && docker compose restart 2>/dev/null || echo '[SKIP] No running container to restart'"
-
-echo ""
-echo "=== Done ==="

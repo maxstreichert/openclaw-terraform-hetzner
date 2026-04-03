@@ -5,7 +5,7 @@
 
 SHELL := /bin/bash
 .PHONY: init plan apply destroy ssh ssh-root tunnel output ip fmt validate clean help \
-        bootstrap deploy push-env push-config setup-auth backup-now restore logs status \
+        bootstrap deploy restart push-env push-config setup-auth backup-now restore logs status \
         tailscale-status tailscale-ip tailscale-up tailscale-serve \
         workspace-sync
 
@@ -101,6 +101,10 @@ deploy: ## Pull latest image and restart container on the VPS
 	@echo -e "$(BLUE)[DEPLOY]$(NC) Deploying latest image to VPS..."
 	@./deploy/deploy.sh $(SERVER_IP)
 
+restart: ## Restart OpenClaw containers on the VPS
+	@echo -e "$(BLUE)[DEPLOY]$(NC) Restarting containers on VPS..."
+	@./scripts/restart.sh $(SERVER_IP)
+
 push-env: ## Push secrets/openclaw.env to the VPS
 	@echo -e "$(BLUE)[DEPLOY]$(NC) Pushing secrets to VPS..."
 	@./scripts/push-env.sh $(SERVER_IP)
@@ -181,6 +185,7 @@ help: ## Show this help message
 	@echo -e "$(BOLD)Deploy:$(NC)"
 	@echo -e "  $(BLUE)bootstrap$(NC)       Bootstrap OpenClaw on the VPS (run once)"
 	@echo -e "  $(BLUE)deploy$(NC)          Pull latest image and restart container"
+	@echo -e "  $(BLUE)restart$(NC)         Restart containers on the VPS"
 	@echo -e "  $(BLUE)push-env$(NC)        Push secrets/openclaw.env to the VPS"
 	@echo -e "  $(BLUE)push-config$(NC)     Push config files to the VPS"
 	@echo -e "  $(BLUE)setup-auth$(NC)      Set up Claude subscription auth"
