@@ -110,12 +110,12 @@ fi
 
 # Login in ghrc.io
 echo -e "${BOLD}Login in ghrc.io${NC}"
-if [[ -n "$GHCR_USERNAME" ]] && [[ -n "$GHCR_TOKEN" ]]; then
+if [[ -n $GHCR_USERNAME ]] && [[ -n $GHCR_TOKEN ]]; then
     echo "Logging in to GitHub Container Registry..."
-    echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin"
+    echo $GHCR_TOKEN | docker login ghcr.io -u $GHCR_USERNAME --password-stdin
     echo -e "${G}Login successful.${NC}"
 else
-    echo -e "${R}GHCR credentials not set (GHCR_USERNAME / GHCR_TOKEN){NC}"
+    echo -e "${R}GHCR credentials not set for GHCR_USERNAME and GHCR_TOKEN ${NC}"
     echo "       Set them in config/inputs.sh to pull private images"
 fi
 
