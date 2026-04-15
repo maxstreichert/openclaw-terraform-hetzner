@@ -58,6 +58,7 @@ secrets/*
 
 # VSCode
 .vscode/
+.cursor/
 *.code-workspace
 
 # JetBrains
