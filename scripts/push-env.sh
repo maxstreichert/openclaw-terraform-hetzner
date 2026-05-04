@@ -20,8 +20,10 @@ set -euo pipefail
 VPS_USER="openclaw"
 SSH_OPTS="-o StrictHostKeyChecking=accept-new"
 TERRAFORM_DIR="infra/terraform/envs/prod"
-ENV_FILE="secrets/openclaw.env"
-REMOTE_PATH="/home/openclaw/openclaw/.env"
+# ENV_FILE and REMOTE_PATH are env-overridable — used by the MoltyClaw worker, which
+# generates per-customer env files in a temp directory and pushes them at runtime.
+ENV_FILE="${ENV_FILE:-secrets/openclaw.env}"
+REMOTE_PATH="${REMOTE_PATH:-/home/openclaw/openclaw/.env}"
 
 # GitHub Container Registry credentials (from local env)
 GHCR_USERNAME="${GHCR_USERNAME:-}"

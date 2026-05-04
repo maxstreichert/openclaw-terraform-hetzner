@@ -256,6 +256,17 @@ else
 fi
 echo ""
 
+# Non-interactive mode — used by the MoltyClaw provisioning worker, CI, and any other
+# automated caller. Set NON_INTERACTIVE=1 (or pass --non-interactive) to skip the prompt.
+if [[ "${NON_INTERACTIVE:-0}" == "1" ]] || [[ "${1:-}" == "--non-interactive" ]] || [[ "${2:-}" == "--non-interactive" ]]; then
+    exit 0
+fi
+
+if [[ ! -t 0 ]]; then
+    # No TTY attached — running under automation. Don't block.
+    exit 0
+fi
+
 read -p "Would you like to SSH in now? [y/N] " -n 1 -r
 echo ""
 
