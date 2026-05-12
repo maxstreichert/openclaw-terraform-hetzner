@@ -168,7 +168,7 @@ Default: CX23 (2 vCPU, 4GB RAM)
 
 To change server type, add to `config/inputs.sh`:
 ```bash
-export TF_VAR_server_type="cx32"  # 4 vCPU, 8GB RAM
+export TF_VAR_server_type="cx33"  # 4 vCPU, 8GB RAM
 ```
 
 See [Hetzner server types](https://www.hetzner.com/cloud#pricing).
